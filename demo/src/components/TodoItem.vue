@@ -6,7 +6,11 @@
     :class="{line:todo.checked}"
   >
     <label>
-      <input type="checkbox" v-model="todo.checked"/>
+      <!--这里的这个v-model="todo.checked"的是双向绑定的,会修改APP的数据
+        1.我的值是由todo.checked确定的
+        2.我改了了数据的是时候,todo里面的数据也要改变
+            既要监视,也要动态的产生 -- get,set -->
+      <input type="checkbox" v-model="ischeck" @click="updateTodo"/>
       <span>{{todo.title}}</span>
     </label>
     <button class="btn btn-danger"  @click="deleteItem">删除</button>
@@ -18,10 +22,21 @@
 		name: "TodoItem",
     props:{
 		  todo:Object,
+      updateTodo:Function,
     },
     data(){
 		  return{
         bgColor:'White',
+      }
+    },
+    computed:{
+		  ischeck:{
+        get(){
+          return this.todo.checked;
+        },
+        set(value){
+          this.updateTodo(this.todo,value)
+        }
       }
     },
     methods:{

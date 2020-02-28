@@ -2,8 +2,12 @@
       <div class="todo-container">
         <div class="todo-wrap">
           <TodoHeader :todos="todos" :addTodo="addTodo"></TodoHeader>
-          <TodoList :todos="todos"></TodoList>
-          <TodoFooter :todos="todos" :deleteAll="deleteAll" :selectAll="selectAll"></TodoFooter>
+          <TodoList :todos="todos" :updateTodo="updateTodo"></TodoList>
+          <TodoFooter
+            :todos="todos"
+            :deleteAll="deleteAll"
+            :selectAll="selectAll"
+          ></TodoFooter>
         </div>
       </div>
 </template>
@@ -62,6 +66,10 @@
         this.todos.forEach((todo) =>{
            return  todo.checked = checked;
         })
+      },
+    //  更新数组 是否选中
+      updateTodo(todo,isCheck){
+        todo.checked = isCheck;
       }
     },
     components: {TodoFooter, TodoList, TodoHeader}

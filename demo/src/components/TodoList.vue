@@ -1,6 +1,10 @@
 <template>
   <ul class="todo-main">
-    <TodoItem v-for="todo in todos" :key="todo.id" :todo="todo"></TodoItem>
+    <TodoItem v-for="todo in todos"
+              :key="todo.id"
+              :todo="todo"
+              :updateTodo="updateTodo"
+    ></TodoItem>
   </ul>
 </template>
 
@@ -10,7 +14,8 @@
 		name: "TodoList",
     components: {TodoItem},
     props:{
-      todos:Array
+      todos:Array,
+      updateTodo:Function
     }
 	}
 </script>
