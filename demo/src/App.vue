@@ -4,7 +4,30 @@
 <!--          <TodoHeader :todos="todos" @addTodo="addTodo"/>&lt;!&ndash;给当前header对象绑定自定义事件监听&ndash;&gt;-->
 <!--          <TodoHeader ref="header" :todos="todos"/>&lt;!&ndash;给当前header对象绑定自定义事件监听&ndash;&gt;-->
           <TodoHeader @addTodo="addTodo" :todos="todos"/><!--给当前header对象绑定自定义事件监听-->
-          <TodoList :todos="todos" :updateTodo="updateTodo"></TodoList>
+          <TodoList :todos="todos" :updateTodo="updateTodo">
+            <!--这个index是list在遍历item的时候传给item的,然后item想要把没有选择框的下边传给APP的时候
+            必须先传给list,在传给APP,当APP拿到数据的时候,他要进行更改的数据,和谁要更改都是在一个组件的
+            那么这个时候就可以通过数组的下标找到对应得数据,然后修改他的值-->
+            <template slot="input" slot-scope="{index}">
+              (>^ω^<)喵 <input type="checkbox" v-model="todos[index].checked">
+            </template>
+            <!--最终这个显示是在item组件的,但是要进行逐层传递,
+            先是从APP将list的插槽覆盖,然后list将item的插槽覆盖-->
+            <template slot-scope='{content}' slot="span">
+              <span style="color:skyblue;">{{content}}</span>
+            </template>
+          </TodoList>
+          <!--新版插槽-->
+          <TodoList :todos="todos" :updateTodo="updateTodo">
+            <template #input="{index}">
+<!--          <input type="checkbox" v-model="ischeck" @click="updateTodo"/>-->
+              (>^ω^<)汪 <input type="checkbox" v-model="todos[index].checked">
+            </template>
+            <template #span="{content}">
+<!--          <span>{{todo.title}}</span>-->
+              <span style="color:palevioletred;">{{content}}</span>
+            </template>
+          </TodoList>
           <TodoFooter>
 <!--            模板在是在父组件解析好了传过去的-->
             <input type="checkbox" v-model="isAllChecked" slot="left"/>
@@ -21,7 +44,7 @@
 	import TodoHeader from "./components/TodoHeader";
   import TodoList from "./components/TodoList";
   import TodoFooter from "./components/TodoFooter";
-  import {readTool, saveTool} from "./utils/stroageUtils";
+  import {readTool, saveTool} from "@/utils/stroageUtils"; //@代表src目录
   export default {
 		name: "App",
     data(){

@@ -10,8 +10,8 @@
         1.我的值是由todo.checked确定的
         2.我改了了数据的是时候,todo里面的数据也要改变
             既要监视,也要动态的产生 -- get,set -->
-      <input type="checkbox" v-model="ischeck" @click="updateTodo"/>
-      <span>{{todo.title}}</span>
+      <slot name="input" :index="index"><input type="checkbox" v-model="ischeck" @click="updateTodo"/></slot>
+      <slot name="span" :content="todo.title"><span>{{todo.title}}</span></slot>
     </label>
     <button class="btn btn-danger"  @click="deleteItem">删除</button>
   </li>
@@ -23,6 +23,7 @@
     props:{
 		  todo:Object,
       updateTodo:Function,
+      index:Number,
     },
     data(){
 		  return{

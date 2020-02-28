@@ -1,10 +1,18 @@
 <template>
   <ul class="todo-main">
-    <TodoItem v-for="todo in todos"
+    <TodoItem v-for="(todo,index) in todos"
+              :index = 'index'
               :key="todo.id"
               :todo="todo"
               :updateTodo="updateTodo"
-    ></TodoItem>
+    >
+      <template slot="input" slot-scope="{index}">
+        <slot :index="index" name="input"></slot>
+      </template>
+      <template #span="{content}">
+        <slot name="span" :content="content"></slot>
+      </template>
+    </TodoItem>
   </ul>
 </template>
 
