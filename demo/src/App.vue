@@ -12,15 +12,13 @@
 	import TodoHeader from "./components/TodoHeader";
   import TodoList from "./components/TodoList";
   import TodoFooter from "./components/TodoFooter";
+  import {readTool, saveTool} from "./utils/stroageUtils";
   export default {
 		name: "App",
     data(){
 		  return{
-		    todos:[
-          {id:1,title:'吃饭',checked:false},
-          {id:2,title:'睡觉',checked:false},
-          {id:3,title:'打豆豆',checked:false},
-        ]
+		    //loacalStroage中的数据如果是读取的不到的话就为null
+		    todos:[],
       }
     },
     mounted() {
@@ -30,6 +28,25 @@
 		          return todo.id !== id
 		      })
 		  });
+		// 模拟异步任务向服务器发送请求,获取数据
+      setTimeout(()=>{
+        //this.todos = JSON.parse(localStorage.getItem('todos_key') || '[]')
+        this.todos = readTool()
+      },1000)
+
+    },
+    //监视数据的变化
+    watch:{
+		  todos:{
+        deep:true,
+        // handler(value){
+        //   //  将数据保存到localStroage中 以json格式
+        //   localStorage.setItem('todos_key',JSON.stringify(value));
+        //   saveTool(value)
+        // }
+        /*这个函数是数据只要发生就会去调用*/
+        handler:saveTool//上面的可以写为这样
+      }
     },
     methods:{
 		  //数据在哪里就更新数据的行为就应该定义在哪里
