@@ -1,18 +1,13 @@
 <template>
       <div class="todo-container">
         <div class="todo-wrap">
-<!--          <TodoHeader :todos="todos" @addTodo="addTodo"/>&lt;!&ndash;给当前header对象绑定自定义事件监听&ndash;&gt;-->
-<!--          <TodoHeader ref="header" :todos="todos"/>&lt;!&ndash;给当前header对象绑定自定义事件监听&ndash;&gt;-->
-          <TodoHeader @addTodo="addTodo" :todos="todos"/><!--给当前header对象绑定自定义事件监听-->
+          <TodoHeader :todos="todos" :addTodo="addTodo"></TodoHeader>
           <TodoList :todos="todos" :updateTodo="updateTodo"></TodoList>
-          <TodoFooter>
-<!--            模板在是在父组件解析好了传过去的-->
-            <input type="checkbox" v-model="isAllChecked" slot="left"/>
-            <span slot="middle">
-                <span>已完成{{checkSize}}</span> / 全部{{todos.length}}
-            </span>
-            <button slot="right" class="btn btn-danger" @click="deleteAll">清除已完成任务</button>
-          </TodoFooter>
+          <TodoFooter
+            :todos="todos"
+            :deleteAll="deleteAll"
+            :selectAll="selectAll"
+          ></TodoFooter>
         </div>
       </div>
 </template>
@@ -30,23 +25,8 @@
 		    todos:[],
       }
     },
-    computed:{
-      checkSize(){
-        return this.todos.reduce((preTotal, todo) =>
-          preTotal + (todo.checked?1:0) ,0)
-      },
-      isAllChecked:{
-        get(){
-          return this.checkSize === this.todos.length
-            && this.checkSize >0 ;
-        },
-        set(value){ //当前checkbox的最新的值,通知父组件去修改数据
-          this.selectAll(value)
-        }
-      }
-    },
     mounted() {
-		  //通过bus绑定事件监听,根据id,删除对应任务
+		  //根据id,删除对应任务
 		  this.bus.$on('deleteItem',(id) =>{
 		      this.todos = this.todos.filter((todo) =>{
 		          return todo.id !== id
@@ -57,13 +37,18 @@
         //this.todos = JSON.parse(localStorage.getItem('todos_key') || '[]')
         this.todos = readTool()
       },1000)
-    //  给header绑定事件监听
-      //this.$refs.header.$on('addTodo',this.addTodo)
+
     },
     //监视数据的变化
     watch:{
 		  todos:{
         deep:true,
+        // handler(value){
+        //   //  将数据保存到localStroage中 以json格式
+        //   localStorage.setItem('todos_key',JSON.stringify(value));
+        //   saveTool(value)
+        // }
+        /*这个函数是数据只要发生就会去调用*/
         handler:saveTool//上面的可以写为这样
       }
     },

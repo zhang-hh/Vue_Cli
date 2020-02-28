@@ -45,7 +45,6 @@
 		    const {title} = this.todo;
          if (window.confirm(`确定删除${title}`)){
            //把id传给app进行删除
-           //通过bus分发事件
            this.bus.$emit('deleteItem',this.todo.id)
          }
       },

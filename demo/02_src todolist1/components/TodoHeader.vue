@@ -1,10 +1,7 @@
 <template>
   <div class="todo-header">
-    <input type="text"
-      placeholder="请输入你的任务名称，按回车键确认"
-      v-model="title"
-      @keyup.enter="addItem"
-    />
+    <input type="text" placeholder="请输入你的任务名称，按回车键确认"
+           v-model="title" @keyup.enter="addItem"/>
   </div>
 </template>
 
@@ -13,6 +10,7 @@
 		name: "TodoHeader",
     props:{
 		  todos:Array,
+      addTodo:Function,
     },
     data(){
 		  return{
@@ -21,7 +19,6 @@
     },
     methods:{
       addItem(){
-        //console.log(this); //组件的实例
         const {todos,title} = this;
         //1.检查合法性
         if (!title){
@@ -32,9 +29,7 @@
         let id = todos.length +1;
         const todo={id,title,checked:false};
         //3.添加到todos
-        //this.addTodo(todo)
-        //分发自定义事件:addTodo
-        this.$emit('addTodo',todo);
+        this.addTodo(todo)
         //4.清除输入
         this.title = '';
       }
