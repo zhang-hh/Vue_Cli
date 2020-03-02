@@ -2,7 +2,7 @@
     const a = {
       template:'<div>{{msg}}</div>',
       name:'App',
-      data(){
+      (){
         return{
           msg:'哈哈哈',
         }
